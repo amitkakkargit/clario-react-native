@@ -1,14 +1,17 @@
-import { analyzeVisa } from './visaAnalyzer';
-import { extractSkillsFromJD } from './skillExtractor';
-import { matchSkills } from './skillMatcher';
-import { detectSeniority } from './seniorityDetector';
-import { detectLocation } from './locationDetector';
-import { calculateScore, calculateAdvancedScore } from './scorer';
-import { JobAnalysisResult } from '../types';
+import { JobAnalysisResult } from "../../types";
+import { detectLocation } from "./locationDetector";
+import { calculateAdvancedScore, calculateScore } from "./scorer";
+import { detectSeniority } from "./seniorityDetector";
+import { extractSkillsFromJD } from "./skillExtractor";
+import { matchSkills } from "./skillMatcher";
+import { analyzeVisa } from "./visaAnalyzer";
 
-export function analyzeJob(jobDescription: string, userSkillsRaw: string): JobAnalysisResult {
+export function analyzeJob(
+  jobDescription: string,
+  userSkillsRaw: string,
+): JobAnalysisResult {
   const userSkills = userSkillsRaw
-    .split(',')
+    .split(",")
     .map((s) => s.trim())
     .filter(Boolean);
 
@@ -26,23 +29,29 @@ export function analyzeJob(jobDescription: string, userSkillsRaw: string): JobAn
   const advancedScore = calculateAdvancedScore();
 
   const warnings: string[] = [];
-  if (visa.risk === 'High') warnings.push('High visa sponsorship risk detected');
-  if (visa.risk === 'Medium') warnings.push('Visa authorization language may be a concern');
+  if (visa.risk === "High")
+    warnings.push("High visa sponsorship risk detected");
+  if (visa.risk === "Medium")
+    warnings.push("Visa authorization language may be a concern");
   if (skills.percentage < 40 && hasUserSkills)
-    warnings.push('Low skill overlap with job requirements');
-  if (skills.missing.length > 5) warnings.push(`${skills.missing.length} required skills not in your profile`);
-  if (seniority === 'senior') warnings.push('Role requires senior-level experience');
+    warnings.push("Low skill overlap with job requirements");
+  if (skills.missing.length > 5)
+    warnings.push(
+      `${skills.missing.length} required skills not in your profile`,
+    );
+  if (seniority === "senior")
+    warnings.push("Role requires senior-level experience");
   if (location.warnings.length > 0) warnings.push(...location.warnings);
 
   const recommendation = {
-    action: score >= 70 ? 'Apply' : score >= 50 ? 'Maybe' : 'Skip',
+    action: score >= 70 ? "Apply" : score >= 50 ? "Maybe" : "Skip",
     reason:
       score >= 70
-        ? 'This role looks like a good fit'
+        ? "This role looks like a good fit"
         : score >= 50
-          ? 'Consider this role but review concerns'
-          : 'This role may not be ideal for you',
-    detailedAction: '',
+          ? "Consider this role but review concerns"
+          : "This role may not be ideal for you",
+    detailedAction: "",
   };
 
   const advancedSkills = {
@@ -72,22 +81,22 @@ export function analyzeJob(jobDescription: string, userSkillsRaw: string): JobAn
     jdSkillsCount: jdSkills.length,
     advancedSkills,
     redFlags: {
-      overallQuality: 'Good',
+      overallQuality: "Good",
       qualityScore: 65,
       flags: [],
     },
     compensation: {
       transparencyScore: 50,
-      transparencyNote: 'Limited compensation information',
-      salary: { found: false, min: 0, max: 0, type: '' },
+      transparencyNote: "Limited compensation information",
+      salary: { found: false, min: 0, max: 0, type: "" },
       equity: { found: false, signals: [] },
       bonus: { found: false, signals: [] },
       benefits: [],
     },
     roleClarity: {
       specificityScore: 65,
-      specificityLabel: 'Clear',
-      track: 'unclear',
+      specificityLabel: "Clear",
+      track: "unclear",
       responsibilityCount: 0,
       trackSignals: { ic: [], management: [] },
     },

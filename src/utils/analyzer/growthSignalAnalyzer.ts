@@ -1,4 +1,4 @@
-import { GrowthSignalsAnalysis } from '../types';
+import { GrowthSignalsAnalysis } from "../../types";
 
 export function analyzeGrowthSignals(): GrowthSignalsAnalysis {
   return {

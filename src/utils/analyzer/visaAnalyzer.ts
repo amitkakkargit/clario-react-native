@@ -1,8 +1,8 @@
-import { VISA_RULES } from './constants';
-import { VisaAnalysis } from '../types';
+import { VisaAnalysis } from "../../types";
+import { VISA_RULES } from "./constants";
 
 export function analyzeVisa(jobDescription: string): VisaAnalysis {
-  const matches: { risk: 'Low' | 'Medium' | 'High'; signal: string }[] = [];
+  const matches: { risk: "Low" | "Medium" | "High"; signal: string }[] = [];
 
   for (const rule of VISA_RULES) {
     if (rule.pattern.test(jobDescription)) {
@@ -11,13 +11,21 @@ export function analyzeVisa(jobDescription: string): VisaAnalysis {
   }
 
   if (matches.length === 0) {
-    return { risk: 'Unknown', signals: [], note: 'No visa-related language detected' };
+    return {
+      risk: "Unknown",
+      signals: [],
+      note: "No visa-related language detected",
+    };
   }
 
   const riskOrder = { High: 3, Medium: 2, Low: 1 };
   const highestRisk = matches.reduce((max, m) =>
-    riskOrder[m.risk] > riskOrder[max.risk] ? m : max
+    riskOrder[m.risk] > riskOrder[max.risk] ? m : max,
   );
 
-  return { risk: highestRisk.risk, signals: matches.map((m) => m.signal), note: null };
+  return {
+    risk: highestRisk.risk,
+    signals: matches.map((m) => m.signal),
+    note: null,
+  };
 }

@@ -1,18 +1,18 @@
+import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import {
+  ActivityIndicator,
+  Alert,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   View,
-  ScrollView,
-  Alert,
-  ActivityIndicator,
-  KeyboardAvoidingView,
-  Platform,
 } from "react-native";
-import { useRouter } from "expo-router";
-import { analyzeJob } from "../utils/analyzer";
+import { analyzeJob } from "../src/utils/analyzer";
 
 export default function AnalyzerScreen() {
   const router = useRouter();

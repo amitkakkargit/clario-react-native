@@ -1,9 +1,8 @@
-import { RedFlagAnalysis } from '../types';
-import { CULTURE_RED_FLAGS } from './constants';
+import { RedFlagAnalysis } from "../../types";
 
 export function detectRedFlags(): RedFlagAnalysis {
   return {
-    overallQuality: 'Good',
+    overallQuality: "Good",
     qualityScore: 75,
     flags: [],
   };
